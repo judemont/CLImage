@@ -14,7 +14,7 @@ import (
 
 
 func main() {
-	imgPath, imgWidth := getArgs()
+	imgPath, imageWidth := getArgs()
 
 	imageFile, err := os.Open(imgPath)
 	if err != nil {
@@ -27,7 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	newWidth := imgWidth
+	newWidth := imageWidth
 	newHeight := newWidth/2
 
 	resizedImg := resizeImg(newWidth, newHeight, imgData)
@@ -51,10 +51,6 @@ func getArgs() (string, int){
 	app := &cli.App{
         Name:  "Image Displayer",
         Usage: "Display images in your terminal, with colored characters.",
-		Action: func(cCtx *cli.Context) error {
-            imagePath = cCtx.Args().Get(0)
-            return nil
-        },
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name: "width",
@@ -63,11 +59,16 @@ func getArgs() (string, int){
 				Destination: &imgWidth,
 			},
 		},
+		Action: func(cCtx *cli.Context) error {
+            imagePath = cCtx.Args().Get(0)
+            return nil
+        },
     }
 
 	if err := app.Run(os.Args); err != nil {
         log.Fatal(err)
     }
+	fmt.Println(img)
 	return imagePath, imgWidth
 }
 
