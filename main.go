@@ -52,7 +52,7 @@ func getArgs() (string, int){
 	cli.VersionFlag = &cli.BoolFlag{
 		Name:    "version",
 		Aliases: []string{"V"},
-		Usage:   "print only the version",
+		Usage:   "print the version",
 	}
 	app := &cli.App{
         Name:  "Image Displayer",
