@@ -48,9 +48,16 @@ func main() {
 func getArgs() (string, int){
 	var imagePath string
 	var imgWidth int
+
+	cli.VersionFlag = &cli.BoolFlag{
+		Name:    "version",
+		Aliases: []string{"V"},
+		Usage:   "print only the version",
+	}
 	app := &cli.App{
         Name:  "Image Displayer",
         Usage: "Display images in your terminal, with colored characters.",
+		Version: "v1.0.16",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name: "width",
@@ -68,7 +75,6 @@ func getArgs() (string, int){
 	if err := app.Run(os.Args); err != nil {
         log.Fatal(err)
     }
-	fmt.Println(img)
 	return imagePath, imgWidth
 }
 
