@@ -4,16 +4,18 @@ import (
 	"fmt"
 	"image"
 	_ "image/jpeg"
-	_ "flag"
 	"log"
 	"os"
-
 	"github.com/gookit/color"
 	"github.com/nfnt/resize"
 )
+import flag "github.com/spf13/pflag"
+
 
 func main() {
-	imageFile, err := os.Open("test_image.jpeg")
+	imgPath, imgWidth := getFlags()
+
+	imageFile, err := os.Open(imgPath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -24,8 +26,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	newWidth := 50
-	newHeight := 25
+	newWidth := imgWidth
+	newHeight := newWidth/2
 
 	resizedImg := resizeImg(newWidth, newHeight, imgData)
 
@@ -42,6 +44,19 @@ func main() {
 	}
 }
 
+func getFlags() (string, int){
+	var imagePath string
+	flag.StringVarP(&imagePath, "image","i" ,"", "The relative or absolute path of the image to be used. (REQUIRED)")
+	flag.BoolP("help", "h", false, "Print help")
+	var width int
+	flag.IntVarP(&width, "width", "w", 50, "The image width")
+	flag.Parse()
+	if imagePath == "" {
+		flag.PrintDefaults()
+		log.Fatal("The image path is required (--image or -i)")
+	}
+	return imagePath, width
+}
 
 
 func resizeImg(newWidth, newHeight int, imgData image.Image) image.Image {
