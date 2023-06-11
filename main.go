@@ -51,16 +51,17 @@ func getArgs() (string, int){
 
 	cli.VersionFlag = &cli.BoolFlag{
 		Name:    "version",
-		Aliases: []string{"V"},
+		Aliases: []string{"V", "v"},
 		Usage:   "print the version",
 	}
 	app := &cli.App{
         Name:  "Image Displayer",
         Usage: "Display images in your terminal, with colored characters.",
-		Version: "v1.0.16",
+		Version: "v1.0.19",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name: "width",
+				Aliases: []string{"W", "w"},
 				Value: 50,
 				Usage: "Image width",
 				Destination: &imgWidth,
