@@ -8,12 +8,13 @@ import (
 	"os"
 	"github.com/gookit/color"
 	"github.com/nfnt/resize"
+	"github.com/urfave/cli/v2"
 )
-import flag "github.com/spf13/pflag"
+
 
 
 func main() {
-	imgPath, imgWidth := getFlags()
+	imgPath, imgWidth := getArgs()
 
 	imageFile, err := os.Open(imgPath)
 	if err != nil {
@@ -44,18 +45,30 @@ func main() {
 	}
 }
 
-func getFlags() (string, int){
+func getArgs() (string, int){
 	var imagePath string
-	flag.StringVarP(&imagePath, "image","i" ,"", "The relative or absolute path of the image to be used. (REQUIRED)")
-	flag.BoolP("help", "h", false, "Print help")
-	var width int
-	flag.IntVarP(&width, "width", "w", 50, "The image width")
-	flag.Parse()
-	if imagePath == "" {
-		flag.PrintDefaults()
-		log.Fatal("The image path is required (--image or -i)")
-	}
-	return imagePath, width
+	var imgWidth int
+	app := &cli.App{
+        Name:  "Image Displayer",
+        Usage: "Display images in your terminal, with colored characters.",
+		Action: func(cCtx *cli.Context) error {
+            imagePath = cCtx.Args().Get(0)
+            return nil
+        },
+		Flags: []cli.Flag{
+			&cli.IntFlag{
+				Name: "width",
+				Value: 50,
+				Usage: "Image width",
+				Destination: &imgWidth,
+			},
+		},
+    }
+
+	if err := app.Run(os.Args); err != nil {
+        log.Fatal(err)
+    }
+	return imagePath, imgWidth
 }
 
 
