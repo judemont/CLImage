@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	_ "image/jpeg"
+	_ "flag"
 	"log"
 	"os"
 
@@ -41,10 +42,14 @@ func main() {
 	}
 }
 
+
+
 func resizeImg(newWidth, newHeight int, imgData image.Image) image.Image {
 	resizedImg := resize.Resize(uint(newWidth), uint(newHeight), imgData, resize.Lanczos3)
 	return resizedImg
 }
+
+
 
 func convertToRGBA(img image.Image) *image.RGBA {
 	bounds := img.Bounds()
