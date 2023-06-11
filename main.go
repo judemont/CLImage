@@ -6,6 +6,8 @@ import (
 	_ "image/jpeg"
 	"log"
 	"os"
+
+	"github.com/nfnt/resize"
 )
 
 func main() {
@@ -21,8 +23,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	rgba := convertToRGBA(imgData)
-	fmt.Println(rgba.At(0, 0)) // Example: accessing the color at pixel (0, 0)
+	// Redimensionner l'image à 500x500 pixels
+	newWidth := 500
+	newHeight := 500
+	resizedImg := resize.Resize(uint(newWidth), uint(newHeight), imgData, resize.Lanczos3)
+
+	rgba := convertToRGBA(resizedImg)
+	fmt.Println(rgba.At(0, 100))
 }
 
 func convertToRGBA(img image.Image) *image.RGBA {
