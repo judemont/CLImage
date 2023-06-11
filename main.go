@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/nfnt/resize"
+	"github.com/gookit/color"
 )
 
 func main() {
@@ -15,7 +16,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	defer imageFile.Close()
 
 	imgData, _, err := image.Decode(imageFile)
@@ -23,13 +23,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Redimensionner l'image à 500x500 pixels
-	newWidth := 500
-	newHeight := 500
+	newWidth := 50
+	newHeight := 25
 	resizedImg := resize.Resize(uint(newWidth), uint(newHeight), imgData, resize.Lanczos3)
 
 	rgba := convertToRGBA(resizedImg)
-	fmt.Println(rgba.At(0, 100))
+
+	for r := 0; r < newHeight; r++ {
+		for c := 0; c < newWidth; c++ {
+			pixColor := rgba.At(c, r)
+			r, g, b, _ := pixColor.RGBA()
+			pixRgbColorFormatted := color.RGB(uint8(r>>8), uint8(g>>8), uint8(b>>8), true)
+			pixRgbColorFormatted.Print(" ")
+		}
+		fmt.Println()
+	}
 }
 
 func convertToRGBA(img image.Image) *image.RGBA {
