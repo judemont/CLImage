@@ -57,7 +57,7 @@ func getArgs() (string, int){
 	app := &cli.App{
         Name:  "Image Displayer",
         Usage: "Display images in your terminal, with colored characters.",
-		Version: "v1.0.20",
+		Version: "v1.0.21",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name: "width",
@@ -76,6 +76,9 @@ func getArgs() (string, int){
 	if err := app.Run(os.Args); err != nil {
         log.Fatal(err)
     }
+	if imagePath == ""{
+		log.Fatal("Image path is required.\n Use -h or --help for more information.")
+	}
 	return imagePath, imgWidth
 }
 
