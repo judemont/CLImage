@@ -57,13 +57,13 @@ func getArgs() (string, int){
 	app := &cli.App{
         Name:  "Image Displayer",
         Usage: "Display images in your terminal, with colored characters.",
-		Version: "v1.0.19",
+		Version: "v1.0.20",
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name: "width",
 				Aliases: []string{"W", "w"},
 				Value: 50,
-				Usage: "Image width",
+				Usage: "Image width (in characters)",
 				Destination: &imgWidth,
 			},
 		},
