@@ -6,6 +6,7 @@ import (
 	_ "image/jpeg"
 	"log"
 	"os"
+	"flag"
 
 	"github.com/nfnt/resize"
 	"github.com/gookit/color"
