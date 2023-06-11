@@ -6,10 +6,9 @@ import (
 	_ "image/jpeg"
 	"log"
 	"os"
-	"flag"
 
-	"github.com/nfnt/resize"
 	"github.com/gookit/color"
+	"github.com/nfnt/resize"
 )
 
 func main() {
@@ -26,7 +25,8 @@ func main() {
 
 	newWidth := 50
 	newHeight := 25
-	resizedImg := resize.Resize(uint(newWidth), uint(newHeight), imgData, resize.Lanczos3)
+
+	resizedImg := resizeImg(newWidth, newHeight, imgData)
 
 	rgba := convertToRGBA(resizedImg)
 
@@ -39,6 +39,11 @@ func main() {
 		}
 		fmt.Println()
 	}
+}
+
+func resizeImg(newWidth, newHeight int, imgData image.Image) image.Image {
+	resizedImg := resize.Resize(uint(newWidth), uint(newHeight), imgData, resize.Lanczos3)
+	return resizedImg
 }
 
 func convertToRGBA(img image.Image) *image.RGBA {
