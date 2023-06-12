@@ -1,4 +1,4 @@
-name: Create Release on Commit
+name: Créer une release et générer un build Go
 
 on:
   push:
@@ -7,28 +7,25 @@ on:
 
 jobs:
   build:
-    name: Build and Create Release
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout repository
+      - name: Checkout du code
         uses: actions/checkout@v2
 
-      - name: Set up Go
+      - name: Installer Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.20.5 # Remplacez par votre version de Go
+          go-version: 1.16
 
-      - name: Build Go program
-        run: go build -o myprogram
+      - name: Générer le build
+        run: go build -o CliImageDisplayer
 
-      - name: Get program version
+      - name: Obtenir la version du programme
         id: version
-        run: |
-          program_version=$(./myprogram --version)
-          echo "::set-output name=version::$program_version"
+        run: echo "::set-output name=version::$(./CliImageDisplayer --version)"
 
-      - name: Create Release
+      - name: Créer une release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -37,12 +34,16 @@ jobs:
           tag_name: ${{ steps.version.outputs.version }}
           release_name: ${{ steps.version.outputs.version }}
           body: |
-            Release created automatically on commit: ${{ github.sha }}
+            Release créée automatiquement à partir du commit: ${{ github.sha }}
           draft: false
           prerelease: false
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+      - name: Upload du fichier à la release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: CliImageDisplayer
-          path: ./myprogram
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./CliImageDisplayer
+          asset_name: CliImageDisplayer
+          asset_content_type: application/octet-stream
