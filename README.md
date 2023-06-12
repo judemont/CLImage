@@ -28,7 +28,7 @@ Flags:
       --[no-]version  Show application version.
 
 Args:
-  <image path>  The path of the image.                Get the version
+  <image path>  The path of the image.
 ```
 ### Example
 ```bash
