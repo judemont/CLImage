@@ -25,12 +25,13 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Description de la release
+          token: ${{ secrets.GTHB_TOKEN }}
+          tag_name: refs/tags/V1.0.23
+          release_name: Release refs/tags/V1.0.23
+          body: Description de la release
           draft: false
           prerelease: false
+
 
       - name: Téléverser le programme Go à la release
         uses: actions/upload-release-asset@v1
