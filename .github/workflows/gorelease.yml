@@ -16,22 +16,24 @@ jobs:
       - name: Installer Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.20.5
+          go-version: 1.20
 
       - name: Générer le build
         run: go build -o CliImageDisplayer
 
       - name: Obtenir la version du programme
         id: version
-        run: echo "::set-output name=version::$(./CliImageDisplayer --version)"
+        run: |
+          VERSION=$(./CliImageDisplayer --version)
+          echo "::set-output name=version::$VERSION"
 
       - name: Créer une release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GTHB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.version }}
+          tag_name: v${{ steps.version.outputs.version }}
           release_name: ${{ steps.version.outputs.version }}
           body: |
             Release créée automatiquement à partir du commit: ${{ github.sha }}
@@ -41,7 +43,7 @@ jobs:
       - name: Upload du fichier à la release
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GTHB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./CliImageDisplayer
