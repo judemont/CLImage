@@ -1,16 +1,48 @@
+name: Create Release on Commit
+
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
 
 jobs:
-  release-linux-amd64:
-    name: release linux/amd64
+  build:
+    name: Build and Create Release
     runs-on: ubuntu-latest
+    
     steps:
-    - uses: actions/checkout@v3
-    - uses: wangyoucao577/go-release-action@v1.30
-      with:
-        github_token: ${{ secrets.GTHB_TOKEN }}
-        goos: linux
-        goarch: amd64
-        binary_name: CliImageDisplayer
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20.5 # Remplacez par votre version de Go
+
+      - name: Build Go program
+        run: go build -o myprogram
+
+      - name: Get program version
+        id: version
+        run: |
+          program_version=$(./myprogram --version)
+          echo "::set-output name=version::$program_version"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: ${{ steps.version.outputs.version }}
+          body: |
+            Release created automatically on commit: ${{ github.sha }}
+          draft: false
+          prerelease: false
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: CliImageDisplayer
+          path: ./myprogram
