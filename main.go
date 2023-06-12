@@ -6,7 +6,6 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	_ "image/gif"
-	_ "image/jpg"
 	"log"
 	"os"
 	"github.com/gookit/color"
