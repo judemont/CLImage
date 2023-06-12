@@ -1,17 +1,27 @@
-# .github/workflows/release.yaml
+name: Upload Go test results
 
-on: 
-  release:
-    types: [created]
+on: [push]
 
 jobs:
-  release-linux-amd64:
-    name: release linux/amd64
+  build:
+
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.14', '1.15', '1.16.x' ]
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: nida/go-release-action@v2.3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        goos: linux
-        goarch: amd64
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Install dependencies
+        run: go get .
+      - name: Test with Go
+        run: go test -json > TestResults-${{ matrix.go-version }}.json
+      - name: Upload Go test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: Go-results-${{ matrix.go-version }}
+          path: TestResults-${{ matrix.go-version }}.json
