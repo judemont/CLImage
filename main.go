@@ -13,7 +13,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-const VERSION = "v1.0.22"
+const VERSION = "v1.0.25"
 
 func main() {
 	imgPath, imageWidth := getArgs()
