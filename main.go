@@ -10,7 +10,7 @@ import (
 	"os"
 	"github.com/gookit/color"
 	"github.com/nfnt/resize"
-	"github.com/urfave/cli/v2"
+	"github.com/alecthomas/kingpin/v2"
 )
 
 const VERSION = "v1.0.25"
@@ -48,39 +48,13 @@ func main() {
 }
 
 func getArgs() (string, int){
-	var imagePath string
-	var imgWidth int
-
-    cli.VersionPrinter = func(cCtx *cli.Context) {
-        fmt.Println(cCtx.App.Version)
-    }
-
-	app := &cli.App{
-        Name:  "CLI Image Displayer",
-        Usage: "Display images in your terminal, with colored characters.",
-		Version: VERSION,
-		Flags: []cli.Flag{
-			&cli.IntFlag{
-				Name: "width",
-				Aliases: []string{"W", "w"},
-				Value: 50,
-				Usage: "Image width (in characters)",
-				Destination: &imgWidth,
-			},
-		},
-		Action: func(cCtx *cli.Context) error {
-            imagePath = cCtx.Args().Get(0)
-            return nil
-        },
-    }
-
-	if err := app.Run(os.Args); err != nil {
-        log.Fatal(err)
-    }
-	if imagePath == ""{
-		os.Exit(0)
-	}
-	return imagePath, imgWidth
+	var(
+		imagePath = kingpin.Arg("image path", "The path of the image.").Required().String()
+		imgWidth = kingpin.Flag("width", "Image width (in characters)").Short('w').Default("50").Int()
+	)
+	kingpin.Version(VERSION)
+	kingpin.Parse()
+	return *imagePath, *imgWidth
 }
 
 
