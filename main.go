@@ -13,7 +13,7 @@ import (
 	"github.com/alecthomas/kingpin/v2"
 )
 
-const VERSION = "v1.0.25"
+const VERSION = "v1.1.0"
 
 func main() {
 	imgPath, imageWidth := getArgs()
