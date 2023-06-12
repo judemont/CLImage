@@ -11,7 +11,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-
+const VERSION = "v1.0.21"
 
 func main() {
 	imgPath, imageWidth := getArgs()
@@ -49,15 +49,14 @@ func getArgs() (string, int){
 	var imagePath string
 	var imgWidth int
 
-	cli.VersionFlag = &cli.BoolFlag{
-		Name:    "version",
-		Aliases: []string{"V", "v"},
-		Usage:   "print the version",
-	}
+    cli.VersionPrinter = func(cCtx *cli.Context) {
+        fmt.Println(cCtx.App.Version)
+    }
+
 	app := &cli.App{
         Name:  "CLI Image Displayer",
         Usage: "Display images in your terminal, with colored characters.",
-		Version: "v1.0.21",
+		Version: VERSION,
 		Flags: []cli.Flag{
 			&cli.IntFlag{
 				Name: "width",
