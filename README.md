@@ -24,8 +24,8 @@ Options :
 ```
 ### Example
 ```bash
-CliImageDisplayer robot.png --width 100
+CliImageDisplayer --width 100 robot.png
 ```
 ```bash
-CliImageDisplayer images/robot.png -w 100
+CliImageDisplayer  -w 100 images/robot.png
 ```
