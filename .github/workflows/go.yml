@@ -19,32 +19,25 @@ jobs:
           go-version: 1.x
 
       - name: Build Go program
-        run: go build -o cliImageDisplayer ./main.go
+        run: go build -o myprogram ./path/to/your/go/package
 
       - name: Get Version
         id: get_version
         run: |
-          VERSION=$(./cliImageDisplayer -v)
+          VERSION=$(./myprogram -v)
           echo "::set-output name=version::$VERSION"
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Create or Update Release
+        id: create_or_update_release
+        uses: softprops/action-gh-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GTHB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          files: myprogram
           tag_name: ${{ steps.get_version.outputs.version }}
           release_name: Release ${{ steps.get_version.outputs.version }}
+          body: |
+            Release ${{ steps.get_version.outputs.version }}
+
           draft: false
           prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GTHB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cliImageDisplayer
-          asset_name: CliImageDisplayer
-          asset_content_type: application/octet-stream
