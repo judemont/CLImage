@@ -5,7 +5,8 @@ A go script to display images in your terminal, with colored characters.
 
 ## How to install it ?
 1. Download the latest release at [github.com/judemont/Image-Displayer/releases/latest](https://github.com/judemont/Image-Displayer/releases/latest)
-2. Make is executable :
+2. Extracts the file and open the folder in a terminal
+3. Make is executable :
 ```bash
 chmod +x  CliImageDisplayer
 ```
