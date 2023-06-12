@@ -19,12 +19,16 @@ sudo mv CliImageDisplayer /bin/
 ```
 ## How to use it (usage) :
 ```
-Usage: CliImageDisplayer [Image path]
+usage: main [<flags>] <image path>
 
-Options :
-   -w <value> --width <value>    Image width in characters (default: 50)
-   -h --help                     Show the help
-   -v --version                  Get the version
+
+Flags:
+      --[no-]help     Show context-sensitive help (also try --help-long and --help-man).
+  -w, --width=50      Image width (in characters)
+      --[no-]version  Show application version.
+
+Args:
+  <image path>  The path of the image.                Get the version
 ```
 ### Example
 ```bash
