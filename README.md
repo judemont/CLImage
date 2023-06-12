@@ -3,6 +3,9 @@ Watch pictures without leaving your terminal !
  
 A go script to display images in your terminal, with colored characters.
 
+![image](https://github.com/judemont/CLI-Image-Displayer/assets/96385330/4f472588-3e60-40ab-bc58-9cafe849bb60)
+
+
 ## How to install it ?
 1. Download the latest release at [github.com/judemont/Image-Displayer/releases/latest](https://github.com/judemont/Image-Displayer/releases/latest)
 2. Extracts the file and open the folder in a terminal
