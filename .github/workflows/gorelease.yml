@@ -34,7 +34,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GTHB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }}
+          tag_name: ${{ steps.version.outputs.version }}
           release_name: ${{ steps.version.outputs.version }}
           body: |
             Release created automatically on commit: ${{ github.sha }}
