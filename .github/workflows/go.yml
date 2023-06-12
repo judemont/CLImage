@@ -1,43 +1,41 @@
-name: Build and Release Go Program
+name: Construire et ajouter un programme Go à la release
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
 
 jobs:
   build:
+    name: Construire et ajouter le programme Go à la release
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Vérifier le dépôt
         uses: actions/checkout@v2
 
-      - name: Set up Go
+      - name: Installer Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.x
+          go-version: 1.20.5
 
-      - name: Build Go program
-        run: go build -o CliImageDisplayer .
+      - name: Construire le programme Go
+        run: go build -o CliImageDisplayer
 
-      - name: Get Version
-        id: get_version
-        run: |
-          VERSION=$(./myprogram -v)
-          echo "::set-output name=version::$VERSION"
-
-      - name: Create or Update Release
-        id: create_or_update_release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GTHB_TOKEN }}
+      - name: Créer une nouvelle release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-          files: CliImageDisplayer
-          tag_name: ${{ steps.get_version.outputs.version }}
-          release_name: Release ${{ steps.get_version.outputs.version }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body: |
-            Release ${{ steps.get_version.outputs.version }}
-
+            Description de la release
           draft: false
           prerelease: false
+
+      - name: Téléverser le programme Go à la release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./CliImageDisplayer
+          asset_name: CliImageDisplayer
+          asset_content_type: application/octet-stream
