@@ -13,3 +13,4 @@ jobs:
         github_token: ${{ secrets.GTHB_TOKEN }}
         goos: linux
         goarch: amd64
+        binary_name: CliImageDisplayer
