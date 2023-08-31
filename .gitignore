@@ -1,1 +1,5 @@
 test_image.*
+parts/
+prime/
+stage/
+*.snap

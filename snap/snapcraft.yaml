@@ -1,0 +1,22 @@
+name: climage
+summary: Watch pictures without leaving your terminal ! 
+description: |
+  Watch pictures without leaving your terminal !
+  A go script to display images in your terminal, with colored characters.
+version: git
+grade: stable
+base: core20
+
+confinement: strict
+
+parts:
+  climage:
+    plugin: go
+    source-type: git
+    source: https://github.com/judemont/CLImage
+
+apps:
+  climage:
+    command: bin/CLImage
+    plugs:
+      - home
