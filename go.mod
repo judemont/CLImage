@@ -1,4 +1,4 @@
-module github.com/judemont/Image_Displayer
+module github.com/judemont/CLImage
 
 go 1.20
 
